@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dyq2emer10ea5"]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Texture2D" uid="uid://bter0triuvb2d" path="res://dungeon/tileMap.png" id="1_uk6wu"]
 [ext_resource type="PackedScene" uid="uid://5jc0w2us51hw" path="res://hero/Hero.tscn" id="2_cfj8j"]
 [ext_resource type="PackedScene" uid="uid://bitr1d8ff3idm" path="res://monster/Monster.tscn" id="2_mbcou"]
+[ext_resource type="PackedScene" uid="uid://bgc7bcglvrrty" path="res://controller/PlayerController.tscn" id="4_fiw3o"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iquqm"]
 texture = ExtResource("1_uk6wu")
@@ -738,6 +739,15 @@ layer_0/tile_data = PackedInt32Array(851993, 524288, 5, 851992, 131072, 8, 85199
 [node name="Goomba" parent="." instance=ExtResource("2_mbcou")]
 position = Vector2(88, 571)
 
+[node name="Goomba2" parent="." instance=ExtResource("2_mbcou")]
+position = Vector2(981, 864)
+
+[node name="Goomba3" parent="." instance=ExtResource("2_mbcou")]
+position = Vector2(1446, 702)
+
 [node name="Hero" parent="." instance=ExtResource("2_cfj8j")]
 position = Vector2(319, 631)
 scale = Vector2(1.81068, 1.83188)
+
+[node name="PlayerController" parent="." node_paths=PackedStringArray("controlledMonster") instance=ExtResource("4_fiw3o")]
+controlledMonster = NodePath("../Goomba")

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgc7bcglvrrty"]
+
+[ext_resource type="Script" path="res://controller/PlayerController.gd" id="1_cfhfr"]
+
+[node name="PlayerController" type="Node"]
+script = ExtResource("1_cfhfr")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 540)

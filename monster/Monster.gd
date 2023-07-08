@@ -10,6 +10,10 @@ var GRAVITY: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var collisionShape: CollisionShape2D = $CollisionShape2D
 @onready var deathTimer: Timer = $DeathTimer
 
+var direction := 0.0
+var isDead := false
+var deathPosition: Vector2
+
 
 func _ready() -> void:
 	$AnimatedSprite2D.play()
@@ -18,10 +22,6 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += GRAVITY * delta
 
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		jump()
-
-	var direction: float = Input.get_axis("move_left", "move_right")
 	if direction:
 		velocity.x = direction * SPEED
 	else:
@@ -30,12 +30,17 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func jump() -> void:
-	velocity.y = JUMP_VELOCITY
+	if is_on_floor():
+		velocity.y = JUMP_VELOCITY
 
 func die() -> void:
+	isDead = true
 	scale.y *= 0.5
 	rotation_degrees = randf_range(45, 315)
 	collisionShape.queue_free()  # Start falling through the ground
+	deathPosition = position
+
+func delete() -> void:
 	deathTimer.start()
 
 func _on_death_timer_timeout():
