@@ -12,6 +12,7 @@ var GRAVITY: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var jumpBlockedDetector: Area2D = $JumpBlockedDetector
 @onready var flipTimer: Timer = $FlipTimer
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+var flag: Flag
 
 var direction: float = 1.0
 
@@ -47,7 +48,10 @@ func flip() -> void:
 		transform.x *= -1
 
 func _on_flip_timer_timeout() -> void:
-	flip()
+	return
+	if (flag.position.x > position.x and direction < 0) or (flag.position.x < position.x and direction > 0):
+		# Only do random flips when walking away from the flag.
+		flip()
 	flipTimer.wait_time = randf_range(0.5, 4)
 
 func _on_stomp_detector_body_entered(body: Monster) -> void:

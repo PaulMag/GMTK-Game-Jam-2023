@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="GMTK Game Jam 2023"
-run/main_scene="res://dungeon/Dungeon.tscn"
+run/main_scene="res://controller/PlayerController.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://monster/goomba_sheet.png"
 
@@ -63,7 +63,9 @@ next_monster={
 2d_physics/layer_1="Monster"
 2d_physics/layer_2="Hero"
 2d_physics/layer_3="Ground"
+2d_physics/layer_4="Flag"
 
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.164706, 0.247059, 0.737255, 1)

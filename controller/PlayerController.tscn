@@ -1,15 +1,171 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgc7bcglvrrty"]
+[gd_scene load_steps=6 format=3 uid="uid://bgc7bcglvrrty"]
 
 [ext_resource type="Script" path="res://controller/PlayerController.gd" id="1_cfhfr"]
 [ext_resource type="Texture2D" uid="uid://bjijkahqmt4dq" path="res://controller/marker.png" id="2_eh7cr"]
+[ext_resource type="PackedScene" uid="uid://b67wagjx56hj8" path="res://dungeon/Dungeon.tscn" id="3_4no4o"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nc6og"]
+font_size = 90
+font_color = Color(1, 0.498039, 0.47451, 1)
+shadow_size = 10
+shadow_color = Color(0.0980392, 0.203922, 0.0470588, 0.784314)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rtklv"]
+line_spacing = 1.0
+font_size = 18
+font_color = Color(0, 1, 1, 1)
+shadow_size = 10
+shadow_color = Color(0.0980392, 0.203922, 0.0470588, 0.784314)
 
 [node name="PlayerController" type="Node"]
 script = ExtResource("1_cfhfr")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, 540)
+position = Vector2(960, 540)
 
 [node name="TextureRect" type="TextureRect" parent="."]
 offset_right = 30.0
 offset_bottom = 30.0
 texture = ExtResource("2_eh7cr")
+
+[node name="Dungeon" parent="." instance=ExtResource("3_4no4o")]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+process_mode = 3
+
+[node name="ButtonPause" type="Button" parent="HUD"]
+visible = false
+offset_right = 116.0
+offset_bottom = 39.0
+text = "Pause Game"
+
+[node name="MenuScreen" type="CanvasLayer" parent="."]
+process_mode = 3
+
+[node name="ColorRect" type="ColorRect" parent="MenuScreen"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -860.0
+offset_top = -440.0
+offset_right = 860.0
+offset_bottom = 440.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(530, 320)
+color = Color(0.952941, 0.952941, 0, 0.498039)
+
+[node name="TitleLabel" type="Label" parent="MenuScreen/ColorRect"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 184.0
+grow_horizontal = 2
+text = "Super Goomba Brothers"
+label_settings = SubResource("LabelSettings_nc6og")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ColorRect2" type="ColorRect" parent="MenuScreen/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -694.0
+offset_top = -210.0
+offset_right = -106.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.498039, 0.47451, 0.643137)
+
+[node name="InformationLabel" type="Label" parent="MenuScreen/ColorRect/ColorRect2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "The Jumping Man is supposed to stomp the Goombas, but is in need of some help.
+
+Move and jump with <W><A><S><D> or the arrow keys.
+
+Press <Q>/<E> or left/right  mouse botton to switch which character you are controlling.
+
+Get as many Goombas as possible stomped before the Hero reaches the Flag at the end of the Level."
+label_settings = SubResource("LabelSettings_rtklv")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ColorRect3" type="ColorRect" parent="MenuScreen/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 106.0
+offset_top = -210.0
+offset_right = 694.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.498039, 0.47451, 0.643137)
+
+[node name="InfoScoringLabel" type="Label" parent="MenuScreen/ColorRect/ColorRect3"]
+layout_mode = 2
+offset_top = 63.0
+offset_right = 588.0
+offset_bottom = 90.0
+grow_horizontal = 2
+size_flags_vertical = 6
+text = "Results:"
+label_settings = SubResource("LabelSettings_rtklv")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ScoringLabel" type="Label" parent="MenuScreen/ColorRect/ColorRect3"]
+layout_mode = 2
+offset_top = 141.0
+offset_right = 588.0
+offset_bottom = 168.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 6
+text = "Play a level first."
+label_settings = SubResource("LabelSettings_rtklv")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MenuScreen/ColorRect"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -121.5
+offset_top = -238.0
+offset_right = 121.5
+offset_bottom = -152.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="ButtonLevel1" type="Button" parent="MenuScreen/ColorRect/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play Level 1"
+
+[connection signal="pressed" from="HUD/ButtonPause" to="." method="_on_button_pause_pressed"]
+[connection signal="button_down" from="MenuScreen/ColorRect/HBoxContainer/ButtonLevel1" to="." method="_on_button_level_1_button_down"]
+[connection signal="mouse_entered" from="MenuScreen/ColorRect/HBoxContainer/ButtonLevel1" to="." method="_on_button_level_1_mouse_entered"]
+[connection signal="pressed" from="MenuScreen/ColorRect/HBoxContainer/ButtonLevel1" to="." method="_on_button_level_1_pressed"]
