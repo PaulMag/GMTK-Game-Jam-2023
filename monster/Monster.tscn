@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://bitr1d8ff3idm"]
+
+[ext_resource type="Script" path="res://monster/Monster.gd" id="1_sjcii"]
+[ext_resource type="Texture2D" uid="uid://b1o067fc1crxn" path="res://monster/goomba_sheet.png" id="2_hcgve"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mswhp"]
+size = Vector2(22, 25)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_548gw"]
+atlas = ExtResource("2_hcgve")
+region = Rect2(0, 0, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o7g6a"]
+atlas = ExtResource("2_hcgve")
+region = Rect2(30, 0, 30, 30)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3cj7l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_548gw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o7g6a")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Monster" type="CharacterBody2D"]
+position = Vector2(336, 183)
+collision_mask = 6
+script = ExtResource("1_sjcii")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -12.5)
+shape = SubResource("RectangleShape2D_mswhp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -15)
+sprite_frames = SubResource("SpriteFrames_3cj7l")
+
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]

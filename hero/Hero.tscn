@@ -1,0 +1,82 @@
+[gd_scene load_steps=9 format=3 uid="uid://5jc0w2us51hw"]
+
+[ext_resource type="Script" path="res://hero/Hero.gd" id="1_74q4d"]
+[ext_resource type="Texture2D" uid="uid://d1qsei173f7f4" path="res://hero/hero_sheet.png" id="2_svmw7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mswhp"]
+size = Vector2(16, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rh6wi"]
+atlas = ExtResource("2_svmw7")
+region = Rect2(20, 0, 20, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tpunb"]
+atlas = ExtResource("2_svmw7")
+region = Rect2(0, 0, 20, 40)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3cj7l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rh6wi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tpunb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nr5es"]
+size = Vector2(14, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l5lld"]
+size = Vector2(14, 4)
+
+[node name="Hero" type="CharacterBody2D"]
+position = Vector2(336, 183)
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_74q4d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -18)
+shape = SubResource("RectangleShape2D_mswhp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, -20)
+sprite_frames = SubResource("SpriteFrames_3cj7l")
+
+[node name="GroundDetector" type="Area2D" parent="."]
+position = Vector2(1, -20)
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundDetector"]
+position = Vector2(19, 26)
+shape = SubResource("RectangleShape2D_nr5es")
+
+[node name="JumpBlockedDetector" type="Area2D" parent="."]
+position = Vector2(1, -20)
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpBlockedDetector"]
+position = Vector2(19, -39)
+shape = SubResource("RectangleShape2D_nr5es")
+
+[node name="StompDetector" type="Area2D" parent="."]
+position = Vector2(1, -20)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StompDetector"]
+position = Vector2(-1, 20)
+shape = SubResource("RectangleShape2D_l5lld")
+
+[node name="FlipTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="body_entered" from="StompDetector" to="." method="_on_stomp_detector_body_entered"]
+[connection signal="timeout" from="FlipTimer" to="." method="_on_flip_timer_timeout"]
