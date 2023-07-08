@@ -1,9 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgc7bcglvrrty"]
+[gd_scene load_steps=3 format=3 uid="uid://bgc7bcglvrrty"]
 
 [ext_resource type="Script" path="res://controller/PlayerController.gd" id="1_cfhfr"]
+[ext_resource type="Texture2D" uid="uid://bjijkahqmt4dq" path="res://controller/marker.png" id="2_eh7cr"]
 
 [node name="PlayerController" type="Node"]
 script = ExtResource("1_cfhfr")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, 540)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 30.0
+offset_bottom = 30.0
+texture = ExtResource("2_eh7cr")

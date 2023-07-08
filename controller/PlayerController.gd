@@ -4,17 +4,35 @@ class_name PlayerController
 
 
 const RELATIVE_SPEED := 8.0
+const MARKER_POSITION := Vector2(-15, -15 - 80)
+const MARKER_AMPLITUDE := 10.0
+const MARKER_SPEED := 2 * PI
+const MARKER_COLOR := Color.GREEN
+const MARKER_COLOR_DEAD := Color.RED
 
 @export var controlledMonster: Monster
 @onready var dungeon = $".."
 @onready var camera: Camera2D = $Camera2D
+@onready var marker: TextureRect = $TextureRect
 
+var markerMotion := 0.0
+
+
+func _ready() -> void:
+	marker.modulate = MARKER_COLOR
 
 func _process(delta: float) -> void:
 	if controlledMonster:
 		var focus = controlledMonster.deathPosition if controlledMonster.isDead else controlledMonster.position
 		var speed = (focus.x - camera.position.x) * delta * RELATIVE_SPEED
 		camera.position.x += speed
+
+		if controlledMonster.isDead:
+			marker.modulate = MARKER_COLOR_DEAD
+		else :
+			markerMotion = sin(Time.get_unix_time_from_system() * 2*PI) * MARKER_AMPLITUDE
+		marker.position = focus + MARKER_POSITION
+		marker.position.y += markerMotion
 
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(controlledMonster):
@@ -35,6 +53,7 @@ func switchControlledMonster(which) -> void:
 	var oldMonster := controlledMonster
 	var newMonster := getMonster(which)
 	controlledMonster = newMonster
+	marker.modulate = MARKER_COLOR
 	if oldMonster.isDead and newMonster != oldMonster:
 		oldMonster.delete()
 
