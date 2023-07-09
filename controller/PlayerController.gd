@@ -4,14 +4,14 @@ class_name PlayerController
 
 
 const RELATIVE_SPEED := 8.0
-const MARKER_POSITION := Vector2(-15, -15 - 80)
-const MARKER_AMPLITUDE := 10.0
-const MARKER_SPEED := 2 * PI
 const MARKER_COLOR := Color.GREEN
 const MARKER_COLOR_DEAD := Color.RED
+const MARKER_COLOR_SWITCH := Color.YELLOW
 
 @onready var camera: Camera2D = $Camera2D
-@onready var marker: TextureRect = $Marker
+@onready var marker: Marker = $Marker
+@onready var markerNext: Marker = $MarkerNext
+@onready var markerPrevious: Marker = $MarkerPrevious
 
 @onready var menuScreen: CanvasLayer = $MenuScreen
 @onready var scoringLabel: Label = $MenuScreen/ColorRect/ColorRect3/ScoringLabel
@@ -26,7 +26,6 @@ var DUNGEONS = [
 
 var dungeon: Dungeon
 var controlledMonster: Monster
-var markerMotion := 0.0
 var gameIsActive := false
 
 
@@ -35,6 +34,12 @@ func _ready() -> void:
 	camera.zoom = Vector2(zoom, zoom)
 	get_tree().paused = true
 	$MenuScreen/ColorRect/ColorRect4/HBoxContainer/ButtonLevel01.grab_focus()
+	markerNext.rotation_degrees = -90
+	markerNext.modulate = MARKER_COLOR_SWITCH
+	markerNext.scale = Vector2(0.75, 0.75)
+	markerPrevious.rotation_degrees = 90
+	markerPrevious.modulate = MARKER_COLOR_SWITCH
+	markerPrevious.scale = Vector2(0.75, 0.75)
 
 func _process(delta: float) -> void:
 	if controlledMonster:
@@ -44,10 +49,17 @@ func _process(delta: float) -> void:
 
 		if controlledMonster.isDead:
 			marker.modulate = MARKER_COLOR_DEAD
-		else :
-			markerMotion = sin(Time.get_unix_time_from_system() * 2*PI) * MARKER_AMPLITUDE
-		marker.position = focus + MARKER_POSITION
-		marker.position.y += markerMotion
+			marker.makeDead()
+		marker.position = focus
+
+		if getAllMonsters().size() >= 2:
+			var nextMonster = getMonster("next")
+			markerNext.position = nextMonster.position
+			var previousMonster = getMonster("previous")
+			markerPrevious.position = previousMonster.position
+		else:
+			markerNext.visible = false
+			markerPrevious.visible = false
 
 	if dungeon.flag.has_overlapping_bodies():
 		gameOver()
@@ -69,6 +81,7 @@ func switchControlledMonster(which) -> void:
 	var newMonster := getMonster(which)
 	controlledMonster = newMonster
 	marker.modulate = MARKER_COLOR
+	marker.makeAlive()
 	if oldMonster and oldMonster.isDead and newMonster != oldMonster:
 		oldMonster.delete()
 
@@ -115,6 +128,8 @@ func gameOver() -> void:
 	gameIsActive = false
 	controlledMonster = null
 	marker.visible = false
+	markerNext.visible = false
+	markerPrevious.visible = false
 	var totalMonsterCount: int = dungeon.totalMonsters
 	var stompedMonsterCount: int = totalMonsterCount - getAllMonsters().size()
 	var percentageScore: int = round(float(stompedMonsterCount) / float(totalMonsterCount) * 100)
@@ -143,6 +158,8 @@ func createNewDungeon(level: int) -> void:
 	dungeon = DUNGEONS[level].instantiate()
 	add_child(dungeon)
 	marker.visible = true
+	markerNext.visible = true
+	markerPrevious.visible = true
 	switchControlledMonster("first")
 	gameIsActive = true
 	hideMenu()

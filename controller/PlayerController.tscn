@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://bgc7bcglvrrty"]
 
 [ext_resource type="Script" path="res://controller/PlayerController.gd" id="1_cfhfr"]
-[ext_resource type="Texture2D" uid="uid://bjijkahqmt4dq" path="res://controller/marker.png" id="2_eh7cr"]
+[ext_resource type="PackedScene" uid="uid://b2jcdl53fxp5" path="res://controller/Marker.tscn" id="2_g6yyv"]
 [ext_resource type="Script" path="res://controller/PauseScript.gd" id="3_clufc"]
 [ext_resource type="Texture2D" uid="uid://vl5yocnn4ykj" path="res://monster/goomba1.png" id="3_jbqde"]
 
@@ -24,11 +24,14 @@ script = ExtResource("1_cfhfr")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(960, 540)
 
-[node name="Marker" type="TextureRect" parent="."]
+[node name="Marker" parent="." instance=ExtResource("2_g6yyv")]
 visible = false
-offset_right = 30.0
-offset_bottom = 30.0
-texture = ExtResource("2_eh7cr")
+
+[node name="MarkerNext" parent="." instance=ExtResource("2_g6yyv")]
+visible = false
+
+[node name="MarkerPrevious" parent="." instance=ExtResource("2_g6yyv")]
+visible = false
 
 [node name="HUD" type="CanvasLayer" parent="."]
 process_mode = 3
