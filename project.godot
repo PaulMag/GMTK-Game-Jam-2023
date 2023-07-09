@@ -10,15 +10,18 @@ config_version=5
 
 [application]
 
-config/name="GMTK Game Jam 2023"
+config/name="Super Goomba Brothers"
+config/description="\"Super Goomba Brothers\"
+Created for GMTK Game Jam 2023 by paulmag91@gmail.com."
 run/main_scene="res://controller/PlayerController.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
-config/icon="res://monster/goomba_sheet.png"
+config/icon="res://monster/goomba1.png"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/mode=3
 
 [dotnet]
 

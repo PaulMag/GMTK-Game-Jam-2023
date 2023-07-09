@@ -25,6 +25,8 @@ var markerMotion := 0.0
 
 
 func _ready() -> void:
+	var zoom = float(get_viewport().size.y) / 1080
+	camera.zoom = Vector2(zoom, zoom)
 	get_tree().paused = true
 
 func _process(delta: float) -> void:
