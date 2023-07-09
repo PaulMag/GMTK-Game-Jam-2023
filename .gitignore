@@ -1,5 +1,7 @@
 .godot/
 
+screenshots
+
 *.pdn
 *.exe
 *.pck

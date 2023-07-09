@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://b3yntukp42swl"]
+[gd_scene load_steps=9 format=3 uid="uid://b3yntukp42swl"]
 
 [ext_resource type="Script" path="res://dungeon/DungeonLevel.gd" id="1_6rdu3"]
 [ext_resource type="Texture2D" uid="uid://bter0triuvb2d" path="res://dungeon/tileMap.png" id="2_0c10x"]
 [ext_resource type="PackedScene" uid="uid://bitr1d8ff3idm" path="res://monster/Monster.tscn" id="3_73gfk"]
 [ext_resource type="PackedScene" uid="uid://5jc0w2us51hw" path="res://hero/Hero.tscn" id="4_woufa"]
 [ext_resource type="PackedScene" uid="uid://dl5wg5gpuujkm" path="res://flag/Flag.tscn" id="5_np47p"]
+[ext_resource type="Texture2D" uid="uid://bvk7px1vbkf6b" path="res://illustration.png" id="6_iq4k3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iquqm"]
 texture = ExtResource("2_0c10x")
@@ -761,3 +762,11 @@ position = Vector2(940, 1000)
 
 [node name="Goomba5" parent="." instance=ExtResource("3_73gfk")]
 position = Vector2(1060, 1000)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.498039)
+offset_left = 370.0
+offset_top = 540.0
+offset_right = 576.0
+offset_bottom = 739.0
+texture = ExtResource("6_iq4k3")
