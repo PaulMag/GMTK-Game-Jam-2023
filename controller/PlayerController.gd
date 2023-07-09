@@ -17,7 +17,12 @@ const MARKER_COLOR_DEAD := Color.RED
 @onready var scoringLabel: Label = $MenuScreen/ColorRect/ColorRect3/ScoringLabel
 @onready var pauseButton: Button = $HUD/ButtonPause
 
-var DUNGEON = preload("res://dungeon/Dungeon.tscn")
+var DUNGEONS = [
+	preload("res://dungeon/DungeonLevel01.tscn"),
+	preload("res://dungeon/DungeonLevel02.tscn"),
+	preload("res://dungeon/DungeonLevel03.tscn"),
+	preload("res://dungeon/DungeonLevel04.tscn"),
+]
 
 var dungeon: Dungeon
 var controlledMonster: Monster
@@ -28,6 +33,7 @@ func _ready() -> void:
 	var zoom = float(get_viewport().size.y) / 1080
 	camera.zoom = Vector2(zoom, zoom)
 	get_tree().paused = true
+	$MenuScreen/ColorRect/ColorRect4/HBoxContainer/ButtonLevel01.grab_focus()
 
 func _process(delta: float) -> void:
 	if controlledMonster:
@@ -128,21 +134,34 @@ func hideMenu() -> void:
 	get_tree().paused = false
 	pauseButton.text = "Pause Game"
 
-func createNewDungeon() -> void:
+func createNewDungeon(level: int) -> void:
+	controlledMonster = null
 	if dungeon:
 		dungeon.queue_free()
-	dungeon = DUNGEON.instantiate()
+	dungeon = DUNGEONS[level].instantiate()
 	add_child(dungeon)
-
-func _on_button_level_1_pressed():
-	controlledMonster = null
-	createNewDungeon()
 	marker.visible = true
 	switchControlledMonster("first")
 	hideMenu()
+
 
 func _on_button_pause_pressed():
 	if get_tree().paused:
 		hideMenu()
 	else:
 		displayMenu()
+
+func _on_button_level_01_pressed():
+	createNewDungeon(0)
+
+func _on_button_level_02_pressed():
+	createNewDungeon(1)
+
+func _on_button_level_03_pressed():
+	createNewDungeon(2)
+
+func _on_button_level_04_pressed():
+	createNewDungeon(3)
+
+func _on_button_quit_game_pressed():
+	get_tree().quit()

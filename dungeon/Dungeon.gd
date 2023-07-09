@@ -1,6 +1,7 @@
-extends Node2D
+extends Node
 
 class_name Dungeon
+# This class should just be inherited by a DungeonLevel
 
 
 @onready var flag: Flag = $Flag
