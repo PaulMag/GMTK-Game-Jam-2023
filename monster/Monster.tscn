@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bitr1d8ff3idm"]
+[gd_scene load_steps=9 format=3 uid="uid://bitr1d8ff3idm"]
 
 [ext_resource type="Script" path="res://monster/Monster.gd" id="1_sjcii"]
 [ext_resource type="Texture2D" uid="uid://b1o067fc1crxn" path="res://monster/goomba_sheet.png" id="2_hcgve"]
+[ext_resource type="AudioStream" uid="uid://cmkkm26nsrf5l" path="res://sounds/Fruit collect 1.wav" id="3_rldpn"]
+[ext_resource type="AudioStream" uid="uid://c3mnibnjgajuh" path="res://sounds/Jump 1.wav" id="4_m4u8w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mswhp"]
 size = Vector2(22, 25)
@@ -43,5 +45,14 @@ sprite_frames = SubResource("SpriteFrames_3cj7l")
 
 [node name="DeathTimer" type="Timer" parent="."]
 wait_time = 2.0
+
+[node name="DieSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_rldpn")
+panning_strength = 3.0
+
+[node name="JumpSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_m4u8w")
+pitch_scale = 1.75
+panning_strength = 3.0
 
 [connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]

@@ -12,8 +12,9 @@ var GRAVITY: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var jumpBlockedDetector: Area2D = $JumpBlockedDetector
 @onready var flipTimer: Timer = $FlipTimer
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
-var flag: Flag
+@onready var jumpSound: AudioStreamPlayer2D = $JumpSound
 
+var flag: Flag
 var direction: float = 1.0
 
 
@@ -37,6 +38,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func jump() -> void:
+	jumpSound.play()
 	velocity.y = JUMP_VELOCITY
 
 func stompJump() -> void:

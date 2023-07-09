@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://5jc0w2us51hw"]
+[gd_scene load_steps=10 format=3 uid="uid://5jc0w2us51hw"]
 
 [ext_resource type="Script" path="res://hero/Hero.gd" id="1_74q4d"]
 [ext_resource type="Texture2D" uid="uid://d1qsei173f7f4" path="res://hero/hero_sheet.png" id="2_svmw7"]
+[ext_resource type="AudioStream" uid="uid://c3mnibnjgajuh" path="res://sounds/Jump 1.wav" id="3_f2i00"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mswhp"]
 size = Vector2(16, 36)
@@ -77,6 +78,10 @@ shape = SubResource("RectangleShape2D_l5lld")
 [node name="FlipTimer" type="Timer" parent="."]
 wait_time = 2.0
 autostart = true
+
+[node name="JumpSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_f2i00")
+panning_strength = 3.0
 
 [connection signal="body_entered" from="StompDetector" to="." method="_on_stomp_detector_body_entered"]
 [connection signal="timeout" from="FlipTimer" to="." method="_on_flip_timer_timeout"]

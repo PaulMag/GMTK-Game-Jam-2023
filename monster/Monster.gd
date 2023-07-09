@@ -9,6 +9,8 @@ var GRAVITY: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 @onready var collisionShape: CollisionShape2D = $CollisionShape2D
 @onready var deathTimer: Timer = $DeathTimer
+@onready var jumpSound: AudioStreamPlayer2D = $JumpSound
+@onready var dieSound: AudioStreamPlayer2D = $DieSound
 
 var direction := 0.0
 var isDead := false
@@ -31,9 +33,11 @@ func _physics_process(delta: float) -> void:
 
 func jump() -> void:
 	if is_on_floor():
+		jumpSound.play()
 		velocity.y = JUMP_VELOCITY
 
 func die() -> void:
+	dieSound.play()
 	isDead = true
 	scale.y *= 0.5
 	rotation_degrees = randf_range(45, 315)
