@@ -27,6 +27,7 @@ var DUNGEONS = [
 var dungeon: Dungeon
 var controlledMonster: Monster
 var markerMotion := 0.0
+var gameIsActive := false
 
 
 func _ready() -> void:
@@ -111,6 +112,7 @@ func sortByHorizontalPosition(a: Node2D, b: Node2D) -> bool:
 		return false
 
 func gameOver() -> void:
+	gameIsActive = false
 	controlledMonster = null
 	marker.visible = false
 	var totalMonsterCount: int = dungeon.totalMonsters
@@ -125,14 +127,14 @@ func gameOver() -> void:
 
 func displayMenu() -> void:
 	get_tree().paused = true
-	pauseButton.text = "Resume Game"
+	pauseButton.text = "Resume Game (ESCAPE)"
 	menuScreen.visible = true
 
 func hideMenu() -> void:
 	menuScreen.visible = false
 	pauseButton.visible = true
 	get_tree().paused = false
-	pauseButton.text = "Pause Game"
+	pauseButton.text = "Pause Game (ESCAPE)"
 
 func createNewDungeon(level: int) -> void:
 	controlledMonster = null
@@ -142,10 +144,13 @@ func createNewDungeon(level: int) -> void:
 	add_child(dungeon)
 	marker.visible = true
 	switchControlledMonster("first")
+	gameIsActive = true
 	hideMenu()
 
 
 func _on_button_pause_pressed():
+	if not gameIsActive:
+		return
 	if get_tree().paused:
 		hideMenu()
 	else:
