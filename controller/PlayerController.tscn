@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bgc7bcglvrrty"]
+[gd_scene load_steps=5 format=3 uid="uid://bgc7bcglvrrty"]
 
 [ext_resource type="Script" path="res://controller/PlayerController.gd" id="1_cfhfr"]
 [ext_resource type="Texture2D" uid="uid://bjijkahqmt4dq" path="res://controller/marker.png" id="2_eh7cr"]
-[ext_resource type="PackedScene" uid="uid://b67wagjx56hj8" path="res://dungeon/Dungeon.tscn" id="3_4no4o"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nc6og"]
 font_size = 90
@@ -23,12 +22,11 @@ script = ExtResource("1_cfhfr")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(960, 540)
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Marker" type="TextureRect" parent="."]
+visible = false
 offset_right = 30.0
 offset_bottom = 30.0
 texture = ExtResource("2_eh7cr")
-
-[node name="Dungeon" parent="." instance=ExtResource("3_4no4o")]
 
 [node name="HUD" type="CanvasLayer" parent="."]
 process_mode = 3
@@ -120,9 +118,9 @@ color = Color(1, 0.498039, 0.47451, 0.643137)
 
 [node name="InfoScoringLabel" type="Label" parent="MenuScreen/ColorRect/ColorRect3"]
 layout_mode = 2
-offset_top = 63.0
+offset_top = 2.0
 offset_right = 588.0
-offset_bottom = 90.0
+offset_bottom = 99.0
 grow_horizontal = 2
 size_flags_vertical = 6
 text = "Results:"
@@ -133,16 +131,15 @@ autowrap_mode = 3
 
 [node name="ScoringLabel" type="Label" parent="MenuScreen/ColorRect/ColorRect3"]
 layout_mode = 2
-offset_top = 141.0
+offset_top = 100.0
 offset_right = 588.0
-offset_bottom = 168.0
+offset_bottom = 309.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 6
 text = "Play a level first."
 label_settings = SubResource("LabelSettings_rtklv")
 horizontal_alignment = 1
-vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MenuScreen/ColorRect"]

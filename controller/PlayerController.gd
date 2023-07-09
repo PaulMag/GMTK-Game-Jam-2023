@@ -10,22 +10,22 @@ const MARKER_SPEED := 2 * PI
 const MARKER_COLOR := Color.GREEN
 const MARKER_COLOR_DEAD := Color.RED
 
-@export var controlledMonster: Monster
-@onready var dungeon: Dungeon = $Dungeon
 @onready var camera: Camera2D = $Camera2D
-@onready var marker: TextureRect = $TextureRect
+@onready var marker: TextureRect = $Marker
 
 @onready var menuScreen: CanvasLayer = $MenuScreen
 @onready var scoringLabel: Label = $MenuScreen/ColorRect/ColorRect3/ScoringLabel
 @onready var pauseButton: Button = $HUD/ButtonPause
 
+var DUNGEON = preload("res://dungeon/Dungeon.tscn")
+
+var dungeon: Dungeon
+var controlledMonster: Monster
 var markerMotion := 0.0
 
 
 func _ready() -> void:
 	get_tree().paused = true
-	marker.modulate = MARKER_COLOR
-	switchControlledMonster("first")
 
 func _process(delta: float) -> void:
 	if controlledMonster:
@@ -40,13 +40,10 @@ func _process(delta: float) -> void:
 		marker.position = focus + MARKER_POSITION
 		marker.position.y += markerMotion
 
-		if dungeon.flag.has_overlapping_bodies():
-			displayMenu()
+	if dungeon.flag.has_overlapping_bodies():
+		gameOver()
 
 func _physics_process(delta: float) -> void:
-	if not is_instance_valid(controlledMonster):
-		controlledMonster = null
-
 	if controlledMonster and (not controlledMonster.isDead):
 		if Input.is_action_just_pressed("jump"):
 			controlledMonster.jump()
@@ -105,12 +102,23 @@ func sortByHorizontalPosition(a: Node2D, b: Node2D) -> bool:
 	else:
 		return false
 
+func gameOver() -> void:
+	controlledMonster = null
+	marker.visible = false
+	var totalMonsterCount: int = dungeon.totalMonsters
+	var stompedMonsterCount: int = totalMonsterCount - getAllMonsters().size()
+	var percentageScore: int = round(float(stompedMonsterCount) / float(totalMonsterCount) * 100)
+	scoringLabel.text = (
+		"Game Over!\n\n%s out of %s Goombas were stomped\n\n%s %% score!"
+		% [stompedMonsterCount, totalMonsterCount, percentageScore]
+	)
+	pauseButton.visible = false
+	menuScreen.visible = true
 
 func displayMenu() -> void:
-	menuScreen.visible = true
-	scoringLabel.text = "Game Over!\n\n%s out of your 8 Goombas were stomped" % [8 - getAllMonsters().size() + (1 if controlledMonster.isDead else 0)]
 	get_tree().paused = true
 	pauseButton.text = "Resume Game"
+	menuScreen.visible = true
 
 func hideMenu() -> void:
 	menuScreen.visible = false
@@ -118,8 +126,17 @@ func hideMenu() -> void:
 	get_tree().paused = false
 	pauseButton.text = "Pause Game"
 
+func createNewDungeon() -> void:
+	if dungeon:
+		dungeon.queue_free()
+	dungeon = DUNGEON.instantiate()
+	add_child(dungeon)
 
 func _on_button_level_1_pressed():
+	controlledMonster = null
+	createNewDungeon()
+	marker.visible = true
+	switchControlledMonster("first")
 	hideMenu()
 
 func _on_button_pause_pressed():
