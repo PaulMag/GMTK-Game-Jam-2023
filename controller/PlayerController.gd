@@ -27,6 +27,7 @@ var DUNGEONS = [
 var dungeon: Dungeon
 var controlledMonster: Monster
 var gameIsActive := false
+var focus: Vector2
 
 
 func _ready() -> void:
@@ -43,9 +44,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if controlledMonster:
-		var focus = controlledMonster.deathPosition if controlledMonster.isDead else controlledMonster.position
-		var speed = (focus.x - camera.position.x) * delta * RELATIVE_SPEED
-		camera.position.x += speed
+		focus = controlledMonster.deathPosition if controlledMonster.isDead else controlledMonster.position
 
 		if controlledMonster.isDead:
 			marker.modulate = MARKER_COLOR_DEAD
@@ -60,6 +59,11 @@ func _process(delta: float) -> void:
 		else:
 			markerNext.visible = false
 			markerPrevious.visible = false
+	else:
+		focus = dungeon.hero.position  # Focus on Hero if no monsters left.
+
+	var speed = (focus.x - camera.position.x) * delta * RELATIVE_SPEED
+	camera.position.x += speed
 
 	if dungeon.flag.has_overlapping_bodies():
 		gameOver()
@@ -84,6 +88,9 @@ func switchControlledMonster(which) -> void:
 	marker.makeAlive()
 	if oldMonster and oldMonster.isDead and newMonster != oldMonster:
 		oldMonster.delete()
+	if isAllMonstersDead():
+		controlledMonster = null
+		marker.visible = false
 
 func getMonster(which) -> Monster:
 	var monsters := getAllMonsters()
@@ -123,6 +130,15 @@ func sortByHorizontalPosition(a: Node2D, b: Node2D) -> bool:
 		return true
 	else:
 		return false
+
+func isAllMonstersDead() -> bool:
+	var monsters = getAllMonsters()
+	if monsters.size() == 0:
+		return true
+	if (monsters.size() == 1) and monsters[0].isDead:
+		return true
+	return false
+
 
 func gameOver() -> void:
 	gameIsActive = false
